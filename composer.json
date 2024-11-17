@@ -1,0 +1,31 @@
+{
+	"name" : "red-scale-dragon/framework",
+	"description" : "Dragon Framework",
+	"type" : "library",
+	"license" : "MIT",
+	"keywords": ["framework", "dragon", "WordPress", "Plugin"],
+	"support": {
+	    "issues": "https://github.com/red-scale-dragon/framework/issues",
+	    "source": "https://github.com/red-scale-dragon/framework"
+	},
+	"require" : {
+		"php": "^8.2",
+        "laravel/framework": "^11.31",
+        "laravel/tinker": "^2.9"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Dragon\\" : "src/Dragon/"
+		},
+		"files" : [
+			"helpers.php"
+		]
+	},
+	"autoload-dev": {
+	    "psr-4": {
+	        "Dragon\\Tests\\": "tests/"
+	    }
+	},
+	"minimum-stability": "stable",
+    "prefer-stable": true
+}

@@ -8,4 +8,4 @@ At Red Scale Corporation, we found that most of our clients use WordPress and ne
 
 ## Usage
 
-Coming soon.
+Our [quick start guide](https://dragon-framework-docs.readthedocs.io/en/latest/quick-start) walks you through creating your first Dragon Framework powered WordPress Plugin.
