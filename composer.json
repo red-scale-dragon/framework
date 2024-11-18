@@ -15,10 +15,7 @@
 	"autoload" : {
 		"psr-4" : {
 			"Dragon\\" : "src/Dragon/"
-		},
-		"files" : [
-			"helpers.php"
-		]
+		}
 	},
 	"autoload-dev": {
 	    "psr-4": {
