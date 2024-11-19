@@ -15,8 +15,12 @@ abstract class PluginHooksAbstract {
 	
 	public function init() {
 		$this->actions['after_setup_theme'][] = [
-			'callback' => [Boot::class, 'init'],
+			'callback' => [Boot::class, 'bootAcorn'],
 			'priority' => 0,
+		];
+		
+		$this->actions['init'][] = [
+			'callback' => [Boot::class, 'initWp'],
 		];
 		
 		$this->enqueueItems('add_action', $this->actions);
