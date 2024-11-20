@@ -5,6 +5,8 @@ namespace Dragon\Core;
 use Dragon\Hooks\AdminPluginHooks;
 use Dragon\Hooks\FrontendPluginHooks;
 use Illuminate\Support\Facades\Artisan;
+use Dragon\Database\Option;
+use Dragon\Database\Migrate;
 
 class Boot {
 	public static function init() {
@@ -23,6 +25,9 @@ class Boot {
 		if (empty(config('app.key'))) {
 			static::generateEncryptionKey();
 		}
+		
+		static::onActivation();
+		
 		// All business logic happens now.
 	}
 	
@@ -39,5 +44,14 @@ class Boot {
 		}
 		
 		Artisan::call('key:generate');
+	}
+	
+	private static function onActivation() {
+		if (Option::get('just_activated', 'no') === 'no') {
+			return;
+		}
+		
+		Migrate::up();
+		Option::delete('just_activated');
 	}
 }

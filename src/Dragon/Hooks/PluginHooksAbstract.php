@@ -3,6 +3,7 @@
 namespace Dragon\Hooks;
 
 use Dragon\Core\Boot;
+use Dragon\Core\Config;
 
 abstract class PluginHooksAbstract {
 	protected array $actions = [
@@ -14,6 +15,11 @@ abstract class PluginHooksAbstract {
 	];
 	
 	public function init() {
+		if (is_admin()) {
+			register_activation_hook(Config::getLoaderFilename(), [AdminPluginHooks::class, 'onActivation']);
+			register_deactivation_hook(Config::getLoaderFilename(), [AdminPluginHooks::class, 'onDeactivation']);
+		}
+		
 		$this->actions['after_setup_theme'][] = [
 			'callback' => [Boot::class, 'bootAcorn'],
 			'priority' => 0,
