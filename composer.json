@@ -10,14 +10,16 @@
 	},
 	"require" : {
 		"php": "^8.1",
-		"roots/acorn": "^4.3"
+		"roots/acorn": "^4.3",
+		"giggsey/libphonenumber-for-php": "^8.13"
 	},
 	"autoload" : {
 		"psr-4" : {
 			"Dragon\\" : "src/Dragon/"
 		},
 		"files" : [
-			"src/Dragon/Assets/helpers.php"
+			"src/Dragon/Assets/helpers.php",
+			"src/Dragon/Https/helpers.php"
 		]
 	},
 	"autoload-dev": {

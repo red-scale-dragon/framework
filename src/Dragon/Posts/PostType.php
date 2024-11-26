@@ -2,7 +2,6 @@
 
 namespace Dragon\Posts;
 
-use Dragon\Core\Util;
 use Illuminate\Support\Pluralizer;
 
 abstract class PostType {
@@ -61,7 +60,7 @@ abstract class PostType {
 		);
 	}
 	
-	public static function filterUpdatedMessages(array $messages) {
+	public static function filterUpdatedMessages(array $messages) : array {
 		global $post;
 		
 		$permalink = get_permalink($post);
@@ -89,7 +88,7 @@ abstract class PostType {
 		return $messages;
 	}
 	
-	public static function filterBulkUpdatedMessages(array $bulkMessages, array $bulkCounts) {
+	public static function filterBulkUpdatedMessages(array $bulkMessages, array $bulkCounts) : array {
 		$plural = Pluralizer::plural(static::$name);
 		
 		$locked = '1 ' . static::$name . ' not updated, somebody is editing it.';

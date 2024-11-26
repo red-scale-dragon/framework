@@ -2,7 +2,6 @@
 
 namespace Dragon\Posts;
 
-use Dragon\Core\Util;
 use Illuminate\Support\Pluralizer;
 
 abstract class Taxonomy {
@@ -57,7 +56,7 @@ abstract class Taxonomy {
 		], static::$options));
 	}
 	
-	public static function updatedMessages(array $messages) {
+	public static function updatedMessages(array $messages) : array {
 		$messages[static::$tag] = array_merge([
 			0 => '', // Unused. Messages start at index 1.
 			1 => static::$name . ' added.',

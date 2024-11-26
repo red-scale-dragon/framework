@@ -1,13 +1,15 @@
 <?php
 
-namespace Dragon\Controllers;
+namespace Dragon\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Dragon\Core\Util;
-use Illuminate\Support\Facades\App;
+use Dragon\Support\Util;
+use Dragon\Assets\LoadsAssets;
 
 abstract class AdminPageController extends Controller {
+	use LoadsAssets;
+	
 	protected static bool $shouldNamespace = true;
 	protected static string $pageTitle = "";
 	protected static string $menuText = "";
@@ -16,6 +18,7 @@ abstract class AdminPageController extends Controller {
 	protected static string $icon = "dashicons-admin-home";
 	protected static string $parentSlug = "";
 	protected static ?int $menuPosition = null;
+	protected static string $routeName = "";
 	
 	public static function register() {
 		if (!is_admin() || wp_is_json_request()) {
@@ -32,8 +35,20 @@ abstract class AdminPageController extends Controller {
 	}
 	
 	public static function pageCallback() {
-		$controller = App::make(static::class);
-		return $controller->render(Request::capture());
+		$request = Request::capture();
+		$url = route(static::$routeName, $request->all(), false);
+		
+		$req = Request::create(
+			$url,
+			$request->getMethod(),
+			$request->all(),
+			$request->cookies->all(),
+			$request->files->all(),
+			$request->server->all()
+		);
+		
+		$res = app()->handle($req);
+		echo $res->getContent();
 	}
 	
 	protected static function setup() {
@@ -52,7 +67,7 @@ abstract class AdminPageController extends Controller {
 		);
 	}
 	
-	private static function namespacedSlug(string $target = null) {
+	private static function namespacedSlug(string $target = null) : string {
 		$slug = empty($target) ? static::$slug : $target;
 		if (static::$shouldNamespace) {
 			$slug = Util::namespaced($slug);

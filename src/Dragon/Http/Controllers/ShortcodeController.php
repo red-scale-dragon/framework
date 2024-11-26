@@ -1,17 +1,18 @@
 <?php
 
-namespace Dragon\Controllers;
+namespace Dragon\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Dragon\Core\Util;
-use Illuminate\Support\Facades\App;
+use Dragon\Support\Util;
+use Dragon\Assets\LoadsAssets;
 
 abstract class ShortcodeController extends Controller {
+	use LoadsAssets;
+	
 	protected static bool $shouldNamespace = true;
 	protected static string $shortcodeTag = "";
-	protected string $content = "";
-	protected array $attributes = [];
+	protected static string $routeName = "";
 	
 	public static function register() {
 		if (is_admin() || wp_is_json_request()) {
@@ -24,12 +25,25 @@ abstract class ShortcodeController extends Controller {
 			$tag = Util::namespaced(static::$shortcodeTag);
 		}
 		add_shortcode($tag, function ($attributes, $content) {
+			$request = Request::capture();
 			
-			$controller = App::make(static::class);
-			$controller->attributes = $attributes;
-			$controller->content = $content;
+			$url = route(static::$routeName, $request->all(), false);
+			$req = Request::create(
+				$url,
+				$request->getMethod(),
+				$request->all(),
+				$request->cookies->all(),
+				$request->files->all(),
+				$request->server->all()
+			);
+			$req->attributes->add([
+				'attributes' => $attributes,
+				'content' => $content,
+				'url' => $request->getUri(),
+			]);
 			
-			return $controller->render(Request::capture());
+			$res = app()->handle($req);
+			return $res->getContent();
 		});
 	}
 	

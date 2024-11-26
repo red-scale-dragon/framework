@@ -15,11 +15,11 @@ class Config {
 		}
 	}
 	
-	public static function getBaseDir() {
+	public static function getBaseDir() : string {
 		return static::$baseDir;
 	}
 	
-	public static function getPluginDirName() {
+	public static function getPluginDirName() : string {
 		if (!empty(static::$pluginDirName)) {
 			return static::$pluginDirName;
 		}
@@ -29,11 +29,11 @@ class Config {
 		return static::$pluginDirName;
 	}
 	
-	public static function getLoaderFilename() {
+	public static function getLoaderFilename() : string {
 		return static::$pluginLoaderFile;
 	}
 	
-	public static function prefix() {
-		return config('app.namespace');
+	public static function prefix() : string {
+		return (string)config('app.namespace');
 	}
 }

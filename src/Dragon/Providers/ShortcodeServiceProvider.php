@@ -20,9 +20,10 @@ class ShortcodeServiceProvider extends ServiceProvider
 	public function boot(): void
 	{
 		$controllers = config('shortcodes.controllers');
-		foreach ($controllers as $controller) {
-			if (method_exists($controller, 'register')) {
-				(new $controller)->register();
+		foreach ($controllers as $controllerName) {
+			$controller = new $controllerName();
+			if (method_exists($controllerName, 'register')) {
+				$controller->register();
 			}
 		}
 	}

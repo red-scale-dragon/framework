@@ -4,6 +4,8 @@ namespace Dragon\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Dragon\Support\Util;
+use function Dragon\Http\nonce;
 
 class BladeDirectiveServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,14 @@ class BladeDirectiveServiceProvider extends ServiceProvider
 	{
 		Blade::directive('image', function (string $expression) {
 			return \Dragon\Assets\image($expression);
+		});
+		
+		Blade::directive('namespaced', function (string $expression) {
+			return Util::namespaced($expression);
+		});
+		
+		Blade::directive('nonce', function () {
+			return nonce();
 		});
 	}
 }

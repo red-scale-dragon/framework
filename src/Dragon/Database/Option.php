@@ -2,7 +2,7 @@
 
 namespace Dragon\Database;
 
-use Dragon\Core\Util;
+use Dragon\Support\Util;
 
 class Option {
 	public static function get(string $key, $default) {

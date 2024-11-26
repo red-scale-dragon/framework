@@ -27,8 +27,6 @@ class Boot {
 		}
 		
 		static::onActivation();
-		
-		// All business logic happens now.
 	}
 	
 	private static function generateEncryptionKey() {
