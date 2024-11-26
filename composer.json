@@ -19,7 +19,7 @@
 		},
 		"files" : [
 			"src/Dragon/Assets/helpers.php",
-			"src/Dragon/Https/helpers.php"
+			"src/Dragon/Http/helpers.php"
 		]
 	},
 	"autoload-dev": {
