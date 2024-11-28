@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Dragon\Support\Util;
 use function Dragon\Http\nonce;
+use Dragon\Support\User;
 
 class BladeDirectiveServiceProvider extends ServiceProvider
 {
@@ -22,16 +23,20 @@ class BladeDirectiveServiceProvider extends ServiceProvider
 	 */
 	public function boot(): void
 	{
-		Blade::directive('image', function (string $expression) {
-			return \Dragon\Assets\image($expression);
+		Blade::directive('image', function (string $filename) {
+			return \Dragon\Assets\image($filename);
 		});
 		
-		Blade::directive('namespaced', function (string $expression) {
-			return Util::namespaced($expression);
+		Blade::directive('namespaced', function (string $key) {
+			return Util::namespaced($key);
 		});
 		
 		Blade::directive('nonce', function () {
-			return nonce();
+			return '<?PHP if(1===1) echo \Dragon\Http\nonce(); ?>';
+		});
+	
+		Blade::if('admin', function () {
+			return User::isAdmin();
 		});
 	}
 }

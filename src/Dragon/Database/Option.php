@@ -5,7 +5,7 @@ namespace Dragon\Database;
 use Dragon\Support\Util;
 
 class Option {
-	public static function get(string $key, $default) {
+	public static function get(string $key, $default = null) {
 		return get_option(Util::namespaced($key), $default);
 	}
 	

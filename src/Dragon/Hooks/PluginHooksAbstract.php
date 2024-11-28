@@ -29,6 +29,9 @@ abstract class PluginHooksAbstract {
 			'callback' => [Boot::class, 'initWp'],
 		];
 		
+		$this->actions = array_merge_recursive($this->actions, Config::get('hooks.global.actions', []));
+		$this->filters = array_merge_recursive($this->filters, Config::get('hooks.global.filters', []));
+		
 		$this->enqueueItems('add_action', $this->actions);
 		$this->enqueueItems('add_filter', $this->filters);
 	}

@@ -71,7 +71,7 @@ class User {
 	
 	public static function getMeta(?string $key = null, $default = null, ?int $userId = null) {
 		$userId ??= static::getUserId();
-		$data = get_user_meta($userId, $key);
+		$data = get_user_meta($userId, $key, true);
 		return empty($data) ? $default : $data;
 	}
 	

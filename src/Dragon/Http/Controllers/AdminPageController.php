@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Dragon\Support\Util;
 use Dragon\Assets\LoadsAssets;
+use function Dragon\Http\send_cookie;
 
 abstract class AdminPageController extends Controller {
 	use LoadsAssets;
@@ -48,6 +49,11 @@ abstract class AdminPageController extends Controller {
 		);
 		
 		$res = app()->handle($req);
+		
+		foreach ($res->headers->getCookies() as $cookie) {
+			send_cookie($cookie);
+		}
+		
 		echo $res->getContent();
 	}
 	

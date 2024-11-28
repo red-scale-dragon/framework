@@ -36,4 +36,23 @@ class Config {
 	public static function prefix() : string {
 		return (string)config('app.namespace');
 	}
+	
+	public static function file(string $filename) {
+		$file = static::getBaseDir() . '/config/' . $filename . '.php';
+		return require(realpath($file));
+	}
+	
+	public static function get(string $key, $default) {
+		$parts = explode('.', $key);
+		$array = static::file(array_shift($parts));
+		foreach ($parts as $key) {
+			if (array_key_exists($key, $array)) {
+				$array = $array[$key];
+			} else {
+				return $default;
+			}
+		}
+		
+		return $array;
+	}
 }

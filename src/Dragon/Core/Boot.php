@@ -7,6 +7,11 @@ use Dragon\Hooks\FrontendPluginHooks;
 use Illuminate\Support\Facades\Artisan;
 use Dragon\Database\Option;
 use Dragon\Database\Migrate;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use App\Exceptions\Handler;
+use Illuminate\Contracts\Http\Kernel;
+use App\Http\Kernel as AppKernel;
+use Dragon\Support\SavesCookies;
 
 class Boot {
 	public static function init() {
@@ -19,6 +24,8 @@ class Boot {
 	
 	public static function bootAcorn() {
 		\Roots\bootloader()->boot();
+		app()->singleton(ExceptionHandler::class, Handler::class);
+		app()->singleton(Kernel::class, AppKernel::class);
 	}
 	
 	public static function initWp() {

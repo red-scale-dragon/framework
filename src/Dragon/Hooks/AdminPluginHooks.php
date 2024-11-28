@@ -4,12 +4,16 @@ namespace Dragon\Hooks;
 
 use Dragon\Database\Migrate;
 use Dragon\Database\Option;
+use Dragon\Core\Config;
 
 class AdminPluginHooks extends PluginHooksAbstract {
 	public function init () {
 		$this->actions['admin_menu'][] = [
 			'callback' => [static::class, 'buildAdminMenu'],
 		];
+		
+		$this->actions = array_merge_recursive($this->actions, Config::get('hooks.admin.actions', []));
+		$this->filters = array_merge_recursive($this->filters, Config::get('hooks.admin.filters', []));
 		
 		parent::init();
 	}
@@ -21,6 +25,10 @@ class AdminPluginHooks extends PluginHooksAbstract {
 	public static function onDeactivation() {
 		if (Option::get('remove_migrations_on_deactivation', 'no') === 'yes') {
 			Migrate::removeDatabaseTables();
+		}
+		
+		foreach (config('cron.actions') as $hook => $data) {
+			wp_clear_scheduled_hook($hook);
 		}
 	}
 	
