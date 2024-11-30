@@ -1,6 +1,6 @@
 <?php
 
-namespace Dragon\Tests\Unit\Database\Models;
+namespace Dragon\Tests\Unit\Exceptions;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Config;
@@ -18,7 +18,6 @@ class HandlerTest extends TestCase {
 		$this->assertFalse($shouldShow);
 	}
 	
-	#[\PHPUnit\Framework\Attributes\Group("current")]
 	public function testWillShowNonIgnoredMessage() {
 		$exception = new ExceptionStub(random_int(9999, 50000000));
 		$shouldShow = Handler::shouldShow(true, $exception);

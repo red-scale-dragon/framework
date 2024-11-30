@@ -36,6 +36,14 @@ abstract class PluginHooksAbstract {
 		$this->enqueueItems('add_filter', $this->filters);
 	}
 	
+	public function getActions() {
+		return $this->actions;
+	}
+	
+	public function getFilters() {
+		return $this->filters;
+	}
+	
 	private function enqueueItems(string $functionName, array $items) {
 		foreach ($items as $hookName => $handlers) {
 			foreach ($handlers as $config) {

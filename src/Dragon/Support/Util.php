@@ -49,34 +49,33 @@ class Util {
 	/**
 	 * @throws \libphonenumber\NumberParseException
 	 */
-	public static function phoneFormat(?string $phoneNumber, int $format = PhoneNumberFormat::E164) : ?string {
+	public static function phoneFormat(
+			?string $phoneNumber,
+			string $region = 'US',
+			int $format = PhoneNumberFormat::E164) : ?string {
+		
 		if (empty($phoneNumber)) {
 			return null;
 		}
 		
 		$util = PhoneNumberUtil::getInstance();
-		return $util->format($phoneNumber, $format);
+		$phoneNumberObj = $util->parse($phoneNumber, $region);
+		return $util->format($phoneNumberObj, $format);
 	}
 	
-	public static function ordinal(int $number) : ?string {
+	public static function nth(int $number) : ?string {
 		$formatter = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
 		$formatted = $formatter->format($number);
 		return $formatted === false ? null : $formatted;
 	}
 	
-	public static function moneyFormat(?float $number) : ?string {
+	public static function moneyFormat(?float $number, string $currency = "USD") : ?string {
 		if (empty($number)) {
 			return null;
 		}
 		
 		$formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
-		$formatted = $formatter->formatCurrency($number, 'USD');
+		$formatted = $formatter->formatCurrency($number, $currency);
 		return $formatted === false ? null : $formatted;
-	}
-	
-	public static function enumToList($enum) : array {
-		$reflector = new \ReflectionClass($enum);
-		$values = array_values($reflector->getConstants());
-		return array_combine($values, $values);
 	}
 }
