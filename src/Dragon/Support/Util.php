@@ -63,7 +63,7 @@ class Util {
 		return $util->format($phoneNumberObj, $format);
 	}
 	
-	public static function nth(int $number) : ?string {
+	public static function nth(float $number) : ?string {
 		$formatter = new \NumberFormatter('en_US', \NumberFormatter::ORDINAL);
 		$formatted = $formatter->format($number);
 		return $formatted === false ? null : $formatted;

@@ -52,7 +52,7 @@ class UtilTest extends TestCase {
 		/** 
 		 * @link https://github.com/php/php-src/issues/17006
 		 */
-		$this->assertSame('651,959,195,189rd', Util::nth(651959195189));
+		$this->assertSame('651,959,195,189th', Util::nth(651959195189));
 	}
 	
 	public function testCanFormatMoney() {
