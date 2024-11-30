@@ -12,6 +12,16 @@ class Util {
 		return $prefix . '_' . $key;
 	}
 	
+	public static function unnamespaced(string $key) : string {
+		$prefix = Config::prefix();
+		$out = $key;
+		if (strpos($key, $prefix) === 0) {
+			$out = substr($key, strlen($prefix . '_'));
+		}
+		
+		return $out;
+	}
+	
 	public static function onlyDigits(string $text) : string {
 		$out = "";
 		

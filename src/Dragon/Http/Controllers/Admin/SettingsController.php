@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Dragon\Database\Option;
 use Dragon\Http\Form\Select;
 use Dragon\Http\Form\Textbox;
+use Illuminate\Foundation\Http\FormRequest;
 
 class SettingsController extends AdminPageController {
 	protected static string $successNotice = "Settings saved.";
@@ -23,29 +24,26 @@ class SettingsController extends AdminPageController {
 	];
 	
 	public function show(Request $request) {
-		$data = [
-        	'title' => static::$pageTitle,
-			'fields' => $this->getFields(),
-		];
-		
-		if ($request->attributes->has('notice')) {
-			$data['notice'] = $request->attributes->get('notice');
-		}
-		
-        return view('admin.settings', $data);
+        return view('admin.settings', $this->makePageData($request, [
+        	'fields' => $this->getFields($request),
+        ]));
     }
     
-    public function store(AdminSettingsRequest $request) {
+    protected function save(FormRequest $request) {
     	if ($request->attributes->get('nonce_invalid')) {
     		return $this->show($request);
     	}
     	
+    	$saveThese = [];
     	foreach ($request->validated() as $key => $val) {
     		if (in_array($key, $this->encryptedFields)) {
     			$val = encrypt($val);
     		}
-    		Option::set($key, $val);
+    		
+    		$saveThese[$key] = $val;
     	}
+    	
+    	$this->saveItems($saveThese);
     	
     	$request->attributes->add([
     		'notice' => Notice::success(static::$successNotice),
@@ -54,7 +52,13 @@ class SettingsController extends AdminPageController {
     	return $this->show($request);
     }
     
-    protected function getFields() {
+    protected function saveItems(array $data) {
+    	foreach ($data as $key => $val) {
+    		Option::set($key, $val);
+    	}
+    }
+    
+    protected function getFields(Request $request) {
     	return [
     		"Plugin Settings",
 	    		Select::make('remove_migrations_on_deactivation')

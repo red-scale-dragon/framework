@@ -19,7 +19,6 @@ class AdminLogController extends AdminPageController {
 		$logContents = (string)file_get_contents($this->getLogFilename());
 		
 		$data = [
-			'title' => static::$pageTitle,
 			'log' => Textarea::make('log')
 					->value($logContents)
 					->attributes([
@@ -28,11 +27,7 @@ class AdminLogController extends AdminPageController {
 					]),
 		];
 		
-		if ($request->attributes->has('notice')) {
-			$data['notice'] = $request->attributes->get('notice');
-		}
-		
-		return view('admin.log', $data);
+		return view('admin.log', $this->makePageData($request, $data));
 	}
 	
 	public function clear(Request $request) {

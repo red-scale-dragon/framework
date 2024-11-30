@@ -1,0 +1,84 @@
+.notice,div.error,div.updated {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left-width: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    margin: 5px 15px 2px;
+    padding: 1px 12px
+}
+
+.notice p {
+	margin-bottom: 0 !important;
+}
+
+.notice-alt {
+    box-shadow: none
+}
+
+.notice-large {
+    padding: 10px 20px
+}
+
+.notice-title {
+    display: inline-block;
+    color: #1d2327;
+    font-size: 18px
+}
+
+.wp-core-ui .notice.is-dismissible {
+    padding-right: 38px;
+    position: relative
+}
+
+.notice-dismiss {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    border: none;
+    margin: 0;
+    padding: 9px;
+    background: 0 0;
+    color: #787c82;
+    cursor: pointer
+}
+
+.notice-dismiss:active:before,.notice-dismiss:focus:before,.notice-dismiss:hover:before {
+    color: #d63638
+}
+
+.notice-dismiss:focus {
+    box-shadow: 0 0 0 2px #2271b1;
+    outline: 2px solid transparent
+}
+
+.notice-success,div.updated {
+    border-left-color: #00a32a
+}
+
+.notice-success.notice-alt {
+    background-color: #edfaef
+}
+
+.notice-warning {
+    border-left-color: #dba617
+}
+
+.notice-warning.notice-alt {
+    background-color: #fcf9e8
+}
+
+.notice-error,div.error {
+    border-left-color: #d63638
+}
+
+.notice-error.notice-alt {
+    background-color: #fcf0f1
+}
+
+.notice-info {
+    border-left-color: #72aee6
+}
+
+.notice-info.notice-alt {
+    background-color: #f0f6fc
+}

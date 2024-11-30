@@ -3,9 +3,6 @@
 namespace Dragon\Assets;
 
 trait LoadsAssets {
-	protected static array $scripts = [];
-	protected static array $styles = [];
-	
 	public static function loadPageAssets() {
 		foreach (static::$scripts as $handle => $config) {
 			$deps = empty($config['dependencies']) ? [] : $config['dependencies'];

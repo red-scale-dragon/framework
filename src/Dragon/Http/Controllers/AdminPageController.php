@@ -61,6 +61,18 @@ abstract class AdminPageController extends Controller {
 		// Adjust properties programatically before setting the menu.
 	}
 	
+	protected function makePageData(Request $request, array $extraData = []) {
+		$data = [
+			'title' => static::$pageTitle,
+		];
+		
+		if ($request->attributes->has('notice')) {
+			$data['notice'] = $request->attributes->get('notice');
+		}
+		
+		return array_merge($data, $extraData);
+	}
+	
 	private static function addMenuPage() {
 		add_menu_page(
 				static::$pageTitle,

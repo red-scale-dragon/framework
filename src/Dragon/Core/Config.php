@@ -34,15 +34,25 @@ class Config {
 	}
 	
 	public static function prefix() : string {
-		return (string)config('app.namespace');
+		return static::get('app.namespace', 'dragonfw_' . static::getPluginDirName());
 	}
 	
-	public static function file(string $filename) {
-		$file = static::getBaseDir() . '/config/' . $filename . '.php';
-		return require(realpath($file));
+	public static function dragonResourcesDir(string $extra = "", bool $htmlPath = false) : ?string {
+		$path = realpath(__DIR__ . '/../../../resources/' . $extra);
+		
+		if ($path !== false && $htmlPath) {
+			$path = '/wp-content/' . explode('wp-content/', $path)[1];
+		}
+		
+		return $path === false ? null : $path;
 	}
 	
-	public static function get(string $key, $default) {
+	public static function file(string $filename) : array {
+		$file = realpath(static::getBaseDir() . '/config/' . $filename . '.php');
+		return $file === false ? [] : require($file);
+	}
+	
+	public static function get(string $key, $default = null) {
 		$parts = explode('.', $key);
 		$array = static::file(array_shift($parts));
 		foreach ($parts as $key) {

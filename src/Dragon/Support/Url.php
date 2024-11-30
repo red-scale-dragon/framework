@@ -29,7 +29,7 @@ class Url {
 	}
 	
 	public static function getAdminMenuLink($slug, array $additionalQuery = []) : string {
-		$link = menu_page_url($slug, false);
+		$link = menu_page_url(Util::namespaced($slug), false);
 		if (empty($link)) {
 			$link = url()->to('/wp-admin/admin.php?page=' . $slug);
 		}

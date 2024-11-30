@@ -11,7 +11,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use App\Exceptions\Handler;
 use Illuminate\Contracts\Http\Kernel;
 use App\Http\Kernel as AppKernel;
-use Dragon\Support\SavesCookies;
 
 class Boot {
 	public static function init() {
