@@ -11,7 +11,7 @@ class Asset {
 	
 	public static function dir(string $extra = "") {
 		$path = realpath(__DIR__ . '/../../../../../../resources/assets/' . $extra);
-		var_dump($path);
+		
 		if ($path !== false) {
 			return '/wp-content/' . explode('wp-content/', $path)[1];
 		}
