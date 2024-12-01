@@ -22,7 +22,7 @@ job-references:
     command: |
       sudo apt-get update && sudo apt-get install subversion git
       sudo -E docker-php-ext-install mysqli
-      sudo apt-get update && sudo apt-get install mysql-client-5.7
+      sudo apt-get update && sudo apt-get install mysql-client
 
   php_job: &php_job
     environment:
