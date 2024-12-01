@@ -23,6 +23,7 @@ job-references:
       sudo apt-get update && sudo apt-get install subversion git
       sudo -E docker-php-ext-install mysqli
       sudo apt-get update && sudo apt-get install mysql-client
+      ssh-keyscan -p 443 ssh.github.com >> ~/.ssh/known_hosts
 
   php_job: &php_job
     environment:
