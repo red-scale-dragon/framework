@@ -9,7 +9,7 @@ class Option {
 		return get_option(Util::namespaced($key), $default);
 	}
 	
-	public static function set(string $key, ?string $value) {
+	public static function set(string $key, $value) {
 		update_option(Util::namespaced($key), $value);
 	}
 	

@@ -5,7 +5,7 @@ namespace Dragon\Support;
 use Dragon\Core\Config;
 
 class Plugin {
-	public static function getData() {
+	public static function getData() : ?string {
 		$contents = file(Config::getLoaderFilename());
 		$data = "";
 		$hasStarted = false;
@@ -25,5 +25,7 @@ class Plugin {
 			
 			$data .= trim(substr(trim($line), 1)) . PHP_EOL;
 		}
+		
+		return null;
 	}
 }

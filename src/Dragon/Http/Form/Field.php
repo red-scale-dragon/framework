@@ -58,11 +58,11 @@ abstract class Field {
 		return $out;
 	}
 	
-	public function getLabel() : ?string{
+	public function getLabel() : ?string {
 		return $this->label;
 	}
 	
-	public function getAttributes() : array{
+	public function getAttributes() : array {
 		return $this->attributes;
 	}
 	

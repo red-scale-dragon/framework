@@ -22,7 +22,7 @@ class AjaxServiceProvider extends ServiceProvider
 			foreach ($hooks as $data) {
 				static::addAjaxHook('wp_ajax_' . Util::namespaced($slug), $data['callback']);
 				
-				if ($data['frontend']) {
+				if (!empty($data['frontend'])) {
 					static::addAjaxHook('wp_ajax_nopriv_' . Util::namespaced($slug), $data['callback']);
 				}
 			}

@@ -9,7 +9,7 @@ use Dragon\Core\Config;
 class Asset {
 	private static bool $enabledAjax = false;
 	
-	public static function dir(string $extra = "") {
+	public static function dir(string $extra = "") : ?string {
 		$path = realpath(__DIR__ . '/../../../../../../resources/assets/' . $extra);
 		
 		if ($path !== false) {
