@@ -5,11 +5,17 @@ namespace Dragon\Hooks;
 use Dragon\Database\Migrate;
 use Dragon\Database\Option;
 use Dragon\Core\Config;
+use Dragon\Support\Util;
+use Dragon\Admin\Table;
 
 class AdminPluginHooks extends PluginHooksAbstract {
 	public function init () {
 		$this->actions['admin_menu'][] = [
 			'callback' => [static::class, 'buildAdminMenu'],
+		];
+		
+		$this->actions['wp_ajax_' .  Util::namespaced('table_delete')][] = [
+			'callback' => [Table::class, 'handleTableRowDelete'],
 		];
 		
 		$this->actions = array_merge_recursive($this->actions, Config::get('hooks.admin.actions', []));

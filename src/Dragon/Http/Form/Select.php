@@ -10,7 +10,7 @@ class Select extends Field {
 		return $this;
 	}
 	
-	public function render() : string {
+	protected function toHtml() : string {
 		$out = '<select name="' . $this->getName() . '" ';
 		foreach ($this->getAttributes() as $key => $val) {
 			$out .= $key . '="' . $val . '"';

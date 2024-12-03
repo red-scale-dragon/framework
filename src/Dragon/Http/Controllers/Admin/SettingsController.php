@@ -3,12 +3,10 @@
 namespace Dragon\Http\Controllers\Admin;
 
 use Dragon\Http\Controllers\AdminPageController;
-use App\Http\Requests\Admin\AdminSettingsRequest;
 use Dragon\Admin\Notice;
 use Illuminate\Http\Request;
 use Dragon\Database\Option;
 use Dragon\Http\Form\Select;
-use Dragon\Http\Form\Textbox;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SettingsController extends AdminPageController {
@@ -18,6 +16,8 @@ class SettingsController extends AdminPageController {
 	protected static string $capability = "manage_options";
 	protected static string $routeName = "admin-settings";
 	protected static string $slug = "settings";
+	protected static string $lastPage = "";
+	protected static bool $readOnly = false;
 	
 	protected array $encryptedFields = [
 		'test_field',
@@ -25,7 +25,9 @@ class SettingsController extends AdminPageController {
 	
 	public function show(Request $request) {
         return view('admin.settings', $this->makePageData($request, [
-        	'fields' => $this->getFields($request),
+        	'fields'	=> $this->getFields($request),
+        	'last_page'	=> static::$lastPage,
+        	'read_only'	=> static::$readOnly,
         ]));
     }
     
@@ -45,9 +47,7 @@ class SettingsController extends AdminPageController {
     	
     	$this->saveItems($saveThese);
     	
-    	$request->attributes->add([
-    		'notice' => Notice::success(static::$successNotice),
-    	]);
+    	Notice::success(static::$successNotice);
     	
     	return $this->show($request);
     }

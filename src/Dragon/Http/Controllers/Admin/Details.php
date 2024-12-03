@@ -4,10 +4,15 @@ namespace Dragon\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Dragon\Support\Util;
+use Dragon\Support\Url;
 
 class Details extends SettingsController {
 	protected static string $successNotice = "Saved.";
 	protected string $modelName = "";
+	
+	public function __construct() {
+		static::$lastPage = Url::getAdminMenuLink(static::$parentSlug);
+	}
 	
 	protected function saveItems(array $data) {
 		if (empty($this->modelName)) {

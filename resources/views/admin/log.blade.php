@@ -1,6 +1,3 @@
-@if(!empty($notice))
-	{!! $notice !!}
-@endif
 <h1>{{ $title }}</h1>
 <div id="dragon-log" class="card card-full-width">
 	<form method="POST">

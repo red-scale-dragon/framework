@@ -18,7 +18,6 @@ class ValidatesNonce
     public function handle(Request $request, Closure $next): Response
     {
     	$request->attributes->add([
-    		'notice' => null,
     		'nonce_invalid' => false,
     	]);
     	
@@ -28,8 +27,9 @@ class ValidatesNonce
     	
     	$nonce = $request->post(Util::namespaced('nonce'));
     	if (!wp_verify_nonce($nonce, Util::namespaced('nonce'))) {
+    		Notice::error(Notice::ERROR_INVALID_NONCE);
+    		
     		$request->attributes->add([
-    			'notice' => Notice::error(Notice::ERROR_INVALID_NONCE),
     			'nonce_invalid' => true,
     		]);
     	}

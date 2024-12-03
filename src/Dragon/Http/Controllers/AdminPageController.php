@@ -66,10 +66,6 @@ abstract class AdminPageController extends Controller {
 			'title' => static::$pageTitle,
 		];
 		
-		if ($request->attributes->has('notice')) {
-			$data['notice'] = $request->attributes->get('notice');
-		}
-		
 		return array_merge($data, $extraData);
 	}
 	

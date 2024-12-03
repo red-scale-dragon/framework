@@ -14,7 +14,7 @@ class Textbox extends Field {
 		return $this->type;
 	}
 	
-	public function render(): string {
+	protected function toHtml() : string {
 		$out = '<input type="' . $this->getType() . '" name="' . $this->getName() . '" value="' . $this->getValue() . '" ';
 		foreach ($this->attributes as $key => $val) {
 			$out .= $key . '="' . $val . '" ';

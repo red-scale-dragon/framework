@@ -68,4 +68,15 @@ class SelectTest extends TestCase {
 		$select = $select->encrypted();
 		$this->assertTrue($select->isEncrypted());
 	}
+	
+	public function testCanSetReadOnly() {
+		$select = Select::make('test_select');
+		$select->value('test');
+		$this->assertFalse($select->isReadOnly());
+		$this->assertNotSame($select->getValue(), $select->render());
+		
+		$select = $select->readOnly();
+		$this->assertTrue($select->isReadOnly());
+		$this->assertSame($select->getValue(), $select->render());
+	}
 }

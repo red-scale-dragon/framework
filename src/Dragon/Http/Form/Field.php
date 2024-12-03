@@ -11,6 +11,7 @@ abstract class Field {
 	protected ?string $value = "";
 	protected bool $required = false;
 	protected bool $encrypted = false;
+	protected bool $readOnly = false;
 	
 	public static function make(string $name) : static {
 		return new static($name);
@@ -39,6 +40,15 @@ abstract class Field {
 	public function encrypted(bool $isEncrypted = true) : static {
 		$this->encrypted = $isEncrypted;
 		return $this;
+	}
+	
+	public function readOnly(bool $isReadOnly = true) : static {
+		$this->readOnly = $isReadOnly;
+		return $this;
+	}
+	
+	public function isReadOnly() : bool {
+		return $this->readOnly;
 	}
 	
 	public function getName() : string {
@@ -74,9 +84,17 @@ abstract class Field {
 		return $this->encrypted;
 	}
 	
+	public function render() : string {
+		if ($this->isReadOnly()) {
+			return $this->getValue();
+		}
+		
+		return $this->toHtml();
+	}
+	
 	protected function __construct(string $name) {
 		$this->name = $name;
 	}
 	
-	abstract public function render() : string;
+	abstract protected function toHtml() : string;
 }

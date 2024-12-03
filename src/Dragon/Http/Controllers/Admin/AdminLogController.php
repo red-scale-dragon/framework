@@ -6,6 +6,7 @@ use Dragon\Http\Controllers\AdminPageController;
 use Illuminate\Http\Request;
 use Dragon\Core\Config;
 use Dragon\Http\Form\Textarea;
+use Dragon\Admin\Notice;
 
 class AdminLogController extends AdminPageController {
 	protected static string $pageTitle = "Log";
@@ -37,6 +38,7 @@ class AdminLogController extends AdminPageController {
 		
 		file_put_contents($this->getLogFilename(), '');
 		
+		Notice::success("Cleared.");
 		return $this->show($request);
 	}
 	
