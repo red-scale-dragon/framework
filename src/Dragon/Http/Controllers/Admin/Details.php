@@ -33,13 +33,13 @@ class Details extends SettingsController {
 		}
 	}
 	
-	protected function getValue(?int $id, string $key) : ?string {
+	protected function getValue(?int $id, string $key, ?string $default = null) : ?string {
 		if (empty($id) || empty($this->modelName)) {
-			return null;
+			return $default;
 		}
 		
 		$row = $this->modelName::find($id);
-		return empty($row) ? null : (string)$row->{$key};
+		return empty($row) ? $default : (string)$row->{$key};
 	}
 	
 	protected function getFields(Request $request) {

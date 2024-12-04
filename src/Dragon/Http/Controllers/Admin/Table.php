@@ -13,6 +13,7 @@ abstract class Table extends AdminPageController {
 	protected bool $canDelete = false;
 	
 	protected string $detailsSlug = "";
+	protected string $view = "admin.table";
 	
 	protected array $headers = [
 		//
@@ -38,7 +39,7 @@ abstract class Table extends AdminPageController {
 	
 	public function show(Request $request) {
 		$this->loadPageAssets();
-		return view('admin.table', $this->makePageData($request, [
+		return view($this->view, $this->makePageData($request, [
 			'columnHeaders'	=> $this->headers,
 			'rows'			=> $this->getRows(),
 			'details_slug'	=> $this->detailsSlug,

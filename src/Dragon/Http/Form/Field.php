@@ -86,7 +86,7 @@ abstract class Field {
 	
 	public function render() : string {
 		if ($this->isReadOnly()) {
-			return $this->getValue();
+			return (string)$this->getValue();
 		}
 		
 		return $this->toHtml();

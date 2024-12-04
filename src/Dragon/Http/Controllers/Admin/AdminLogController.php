@@ -17,15 +17,16 @@ class AdminLogController extends AdminPageController {
 	protected static string $parentSlug = "settings";
 	
 	public function show(Request $request) {
-		$logContents = (string)file_get_contents($this->getLogFilename());
+		$filename = $this->getLogFilename();
+		$logContents = empty($filename) ? "" : (string)file_get_contents($filename);
 		
 		$data = [
 			'log' => Textarea::make('log')
-					->value($logContents)
-					->attributes([
-						'rows' => 30,
-						'cols' => 150,
-					]),
+			->value($logContents)
+			->attributes([
+				'rows' => 30,
+				'cols' => 150,
+			]),
 		];
 		
 		return view('admin.log', $this->makePageData($request, $data));
