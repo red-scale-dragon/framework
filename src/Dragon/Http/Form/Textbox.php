@@ -7,6 +7,10 @@ class Textbox extends Field {
 	
 	public function type(string $type) : static {
 		$this->type = $type;
+		if ($this->type === "hidden") {
+			$this->label("");
+		}
+		
 		return $this;
 	}
 	

@@ -14,8 +14,8 @@ const adminTable = ($ => {
 	}
 	
 	function addSelectedRowHandler() {
-		$("#data-table-wrapper tbody tr").on('click', function (e) {
-			$(this).toggleClass('selected');
+		$('#data-table-wrapper').on('click', 'tbody tr', function (e) {
+		    e.currentTarget.classList.toggle('selected');
 		});
 	}
 	
@@ -38,11 +38,11 @@ const adminTable = ($ => {
 	}
 	
 	function addRowEditHandler() {
-		$("#data-table-wrapper tbody tr").on('dblclick', function (e) {
+		$('#data-table-wrapper').on('dblclick', 'tbody tr', function (e) {
 			let rowId = $(this).attr('data-row-id');
 			let updatePage = $('#data-table-wrapper tbody').attr('data-details-page');
 			
-			if (updatePage.length > 0) {
+			if (updatePage.length > 0 && rowId > 0) {
 				window.location = updatePage + "&id=" + rowId;
 			}
 		});

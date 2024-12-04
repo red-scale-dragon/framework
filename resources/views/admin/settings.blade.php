@@ -25,9 +25,11 @@
 				@else
 				<tr>
 					<th scope="row">
+						@if (!empty($field->getLabel()))
 						<label for="{{ $field->getName() }}">
 							{{ $field->getLabel() }} @if($field->isRequired())<i>(Required)</i>@endif
 						</label>
+						@endif
 					</th>
 					<td>
 						@if ($read_only)

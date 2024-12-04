@@ -39,11 +39,7 @@ class Boot {
 		$base = Config::getBaseDir();
 		$copyFrom = $base . '/.env.example';
 		$copyTo = $base . '/.env';
-		if (!file_exists(realpath($copyFrom))) {
-			return;
-		}
-		
-		if (!file_exists(realpath($copyTo))) {
+		if (file_exists(realpath($copyFrom)) && file_exists(realpath($copyTo))) {
 			copy($copyFrom, $copyTo);
 		}
 		
