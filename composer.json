@@ -11,7 +11,8 @@
 	"require" : {
 		"php": "^8.1",
 		"roots/acorn": "^4.3",
-		"giggsey/libphonenumber-for-php": "^8.13"
+		"giggsey/libphonenumber-for-php": "^8.13",
+		"spatie/guzzle-rate-limiter-middleware": "^2.1"
 	},
 	"autoload" : {
 		"psr-4" : {

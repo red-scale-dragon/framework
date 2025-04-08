@@ -19,7 +19,7 @@ class Select extends Field {
 		
 		foreach ($this->options as $value => $text) {
 			$out .= '<option value="' . $value . '"';
-			if (old($this->getName(), $this->getValue()) === $value) {
+			if (old($this->getName(), $this->getValue()) === (string)$value) {
 				$out .= ' selected';
 			}
 			$out .= '>' . $text . '</option>';

@@ -23,7 +23,7 @@ class Details extends SettingsController {
 		
 		$filtered = [];
 		foreach ($data as $key => $val) {
-			$filtered[Util::unnamespaced($key)] = $val;
+			$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes($val));
 		}
 		
 		if (empty($id)) {

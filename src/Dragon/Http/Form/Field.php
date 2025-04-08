@@ -8,6 +8,7 @@ abstract class Field {
 	protected string $name = "";
 	protected array $attributes = [];
 	protected ?string $label = "";
+	protected ?string $description = "";
 	protected ?string $value = "";
 	protected bool $required = false;
 	protected bool $encrypted = false;
@@ -24,6 +25,11 @@ abstract class Field {
 	
 	public function label(string $label) : static {
 		$this->label = $label;
+		return $this;
+	}
+	
+	public function description(string $description) : static {
+		$this->description = $description;
 		return $this;
 	}
 	
@@ -65,11 +71,15 @@ abstract class Field {
 			}
 		}
 		
-		return $out;
+		return str_replace('"', '&quot;', $out);
 	}
 	
 	public function getLabel() : ?string {
 		return $this->label;
+	}
+	
+	public function getDescription() : ?string {
+		return $this->description;
 	}
 	
 	public function getAttributes() : array {

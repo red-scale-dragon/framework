@@ -36,6 +36,9 @@
 							{!! $field->readOnly()->render() !!}
 						@else
 							{!! $field->render() !!}
+							@if (!empty($field->getDescription()))
+								<p class="description">{!! $field->getDescription() !!}</p>
+							@endif
 							@error($field->getName())
 							    <div class="notice notice-error">{{ $message }}</div>
 							@enderror
