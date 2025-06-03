@@ -34,7 +34,7 @@ abstract class Field {
 	}
 	
 	public function value(?string $value) : static {
-		$this->value = $value;
+		$this->value = stripslashes($value);
 		return $this;
 	}
 	

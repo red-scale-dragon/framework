@@ -16,6 +16,10 @@ trait GuzzleTrait {
 		return $this->error;
 	}
 	
+	public function getGuzzle() : Client {
+		return $this->guzzle;
+	}
+	
 	public function jsonCall(callable $request) {
 		$this->error = null;
 		try {

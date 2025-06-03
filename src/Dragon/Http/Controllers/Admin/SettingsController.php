@@ -56,7 +56,7 @@ class SettingsController extends AdminPageController {
 	
 	protected function saveItems(array $data) {
 		foreach ($data as $key => $val) {
-			Option::set($key, $val);
+			Option::set($key, stripslashes($val));
 		}
 	}
 	
