@@ -1,5 +1,5 @@
 <h1>{{ $title }}</h1>
-<div id="dragon-log" class="card card-full-width">
+<div id="dragon-log" class="card card-full-width" style="max-width:unset">
 	<form method="POST">
 		@nonce
 		<table class="form-table">

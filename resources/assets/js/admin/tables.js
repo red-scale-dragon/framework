@@ -5,6 +5,11 @@ const adminTable = ($ => {
 	function init() {
 		table = $('#data-table-wrapper').DataTable({
 		  rowId: 'row-id',
+		  layout: {
+	          topStart: {
+	              buttons: ['csv', 'colvis']
+	          }
+	      }
 		});
 
 		ajax_url = $('#data-table-wrapper tbody').attr('data-ajax');

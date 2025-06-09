@@ -10,6 +10,10 @@ class Details extends SettingsController {
 	protected static string $successNotice = "Saved.";
 	protected string $modelName = "";
 	
+	protected array $emptyIsNullOnFields = [
+		//
+	];
+	
 	public function __construct() {
 		static::$lastPage = Url::getAdminMenuLink(static::$parentSlug);
 	}
@@ -23,7 +27,11 @@ class Details extends SettingsController {
 		
 		$filtered = [];
 		foreach ($data as $key => $val) {
-			$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes($val));
+			if (in_array($key, $this->emptyIsNullOnFields) && empty($val)) {
+				$filtered[Util::unnamespaced($key)] = null;
+			} else {
+				$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes($val));
+			}
 		}
 		
 		if (empty($id)) {

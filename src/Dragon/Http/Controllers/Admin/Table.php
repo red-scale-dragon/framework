@@ -19,9 +19,17 @@ abstract class Table extends AdminPageController {
 		//
 	];
 	
+	protected array $rowActions = [
+	// 		'Transactions' => [
+		// 			'icon_class'	=> 'dashicons-media-spreadsheet',
+		// 			'page_slug'		=> 'dragonfw_dragonapp_transactions',
+		// 			'query_key'		=> 'account_id',
+		// 		],
+	];
+	
 	protected static array $scripts = [
 		'dataTables' => [
-			'script' => '//cdn.datatables.net/2.1.8/js/dataTables.min.js',
+			'script' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/datatables.min.js',
 		],
 		'adminTable' => [
 			'script' => 'admin/tables.js',
@@ -33,7 +41,7 @@ abstract class Table extends AdminPageController {
 	
 	protected static array $styles = [
 		'dataTables' => [
-			'style' => '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css',
+			'style' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/datatables.min.css',
 		],
 	];
 	
@@ -41,6 +49,7 @@ abstract class Table extends AdminPageController {
 		$this->loadPageAssets();
 		return view($this->view, $this->makePageData($request, [
 			'columnHeaders'	=> $this->headers,
+			'rowActions'	=> $this->rowActions,
 			'rows'			=> $this->getRows(),
 			'details_slug'	=> $this->detailsSlug,
 			'can_create'	=> $this->canCreate,

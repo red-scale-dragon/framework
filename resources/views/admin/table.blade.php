@@ -12,6 +12,9 @@
 			@foreach($columnHeaders as $dbCol => $header)
 				<th>{{ $header }}</th>
 			@endforeach
+			@foreach($rowActions as $actionName => $actionData)
+				<th>{{ $actionName }}</th>
+			@endforeach
 			</tr>
 		</thead>
 		<tbody
@@ -25,6 +28,14 @@
 			<tr data-row-id="{{ $row->{$row->getKeyName()} }}">
 				@foreach($columnHeaders as $dbCol => $header)
 					<td>{{ $row->{$dbCol} }}</td>
+				@endforeach
+				
+				@foreach($rowActions as $actionName => $actionData)
+					<td><button
+						onclick="window.location='{{ \Dragon\Support\Url::getAdminMenuLink($actionData['page_slug'], [$actionData['query_key'] => $row->{$row->getKeyName()}]) }}'">
+							<i class="dashicons {{ $actionData['icon_class'] }}"></i>
+						</button>
+					</td>
 				@endforeach
 			</tr>
 			@endforeach
