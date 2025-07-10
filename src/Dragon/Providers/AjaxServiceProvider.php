@@ -18,13 +18,17 @@ class AjaxServiceProvider extends ServiceProvider
 	 * Bootstrap any application services.
 	 */
 	public function boot(): void {
-		foreach (config('hooks.ajax') as $slug => $hooks) {
-			foreach ($hooks as $data) {
-				static::addAjaxHook('wp_ajax_' . Util::namespaced($slug), $data['callback']);
-				
-				if (!empty($data['frontend'])) {
-					static::addAjaxHook('wp_ajax_nopriv_' . Util::namespaced($slug), $data['callback']);
-				}
+		foreach (config('hooks.ajax') as $slug => $data) {
+			static::addAjaxHook('wp_ajax_' . Util::namespaced($slug),
+					function () use ($data) {
+						return $data['callback']();
+					});
+			
+			if (!empty($data['frontend'])) {
+				static::addAjaxHook('wp_ajax_nopriv_' . Util::namespaced($slug),
+						function () use ($data) {
+							return $data['callback']();
+						});
 			}
 		}
 	}

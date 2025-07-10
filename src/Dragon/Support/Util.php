@@ -7,6 +7,16 @@ use libphonenumber\PhoneNumberFormat;
 use Dragon\Core\Config;
 
 class Util {
+	public static function anyEmpty(array $items) : bool {
+		foreach ($items as $item) {
+			if (empty($item)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public static function namespaced(string $key) : string {
 		$prefix = Config::prefix();
 		return $prefix . '_' . $key;
@@ -22,11 +32,11 @@ class Util {
 		return $out;
 	}
 	
-	public static function onlyDigits(string $text) : string {
+	public static function onlyDigits(string $text, bool $allowDecimal = false) : string {
 		$out = "";
 		
 		for ($i=0; $i<strlen($text); $i++) {
-			if (ctype_digit($text[$i])) {
+			if (ctype_digit($text[$i]) || ($allowDecimal && $text[$i] === '.')) {
 				$out .= $text[$i];
 			}
 		}
@@ -53,14 +63,14 @@ class Util {
 			?string $phoneNumber,
 			string $region = 'US',
 			int $format = PhoneNumberFormat::E164) : ?string {
-		
-		if (empty($phoneNumber)) {
-			return null;
-		}
-		
-		$util = PhoneNumberUtil::getInstance();
-		$phoneNumberObj = $util->parse($phoneNumber, $region);
-		return $util->format($phoneNumberObj, $format);
+				
+				if (empty($phoneNumber)) {
+					return null;
+				}
+				
+				$util = PhoneNumberUtil::getInstance();
+				$phoneNumberObj = $util->parse($phoneNumber, $region);
+				return $util->format($phoneNumberObj, $format);
 	}
 	
 	public static function nth(float $number) : ?string {
@@ -70,7 +80,7 @@ class Util {
 	}
 	
 	public static function moneyFormat(?float $number, string $currency = "USD") : ?string {
-		if (empty($number)) {
+		if (!is_numeric($number)) {
 			return null;
 		}
 		

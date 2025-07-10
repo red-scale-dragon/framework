@@ -9,10 +9,11 @@
 	    "source": "https://github.com/red-scale-dragon/framework"
 	},
 	"require" : {
-		"php": "^8.1",
+		"php": "^8.3",
 		"roots/acorn": "^4.3",
 		"giggsey/libphonenumber-for-php": "^8.13",
-		"spatie/guzzle-rate-limiter-middleware": "^2.1"
+		"spatie/guzzle-rate-limiter-middleware": "^2.1",
+		"illuminate/mail": "^10.43"
 	},
 	"autoload" : {
 		"psr-4" : {

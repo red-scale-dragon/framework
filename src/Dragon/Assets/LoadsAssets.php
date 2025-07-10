@@ -9,8 +9,9 @@ trait LoadsAssets {
 	public static function loadPageAssets() {
 		foreach (static::$scripts as $handle => $config) {
 			$deps = empty($config['dependencies']) ? [] : $config['dependencies'];
-			$inFooter = empty($config['in_footer']) ? true : (bool)$config['in_footer'];
-			Asset::loadScript($handle, $config['script'], $deps, $inFooter);
+			$inFooter = array_key_exists('in_footer', $config) ? $config['in_footer'] : true;
+			$useVersioning = array_key_exists('use_versioning', $config) ? $config['use_versioning'] : true;
+			Asset::loadScript($handle, $config['script'], $deps, $inFooter, $useVersioning);
 		}
 		
 		foreach (static::$styles as $handle => $config) {

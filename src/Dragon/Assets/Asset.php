@@ -26,22 +26,28 @@ class Asset {
 		
 		$beforeHandle = $shouldNamespace ? Util::namespaced($beforeHandle) : $beforeHandle;
 		wp_add_inline_script(
-			$beforeHandle,
-			'let ajax_url = "' . admin_url('admin-ajax.php') . '";',
-			'before'
-		);
+				$beforeHandle,
+				'let ajax_url = "' . admin_url('admin-ajax.php') . '";',
+				'before'
+				);
 		
 		static::$enabledAjax = true;
 	}
 	
 	public static function loadScript(
-		string $handle, string $script, array $dependencies = ['jquery'], bool $inFooter = true) {
-		
-		if (!Url::isUrl($script) && !Url::isUrl($script, '//')) {
-			$script = js($script);
-		}
-		
-		wp_enqueue_script(Util::namespaced($handle), $script, static::namespacedDeps($dependencies), true, $inFooter);
+			string $handle, string $script, array $dependencies = ['jquery'], bool $inFooter = true,
+			bool $versioning = true) {
+				
+				if (!Url::isUrl($script) && !Url::isUrl($script, '//')) {
+					$script = js($script);
+				}
+				
+				$noVersioning = null;
+				$defaultVersioning = false;
+				// Fucking WordPress... WTF can't they have REAL engineers volunteer?
+				// Volunteering to destroy something isn't good...
+				$versioning = $versioning === false ? $noVersioning : $defaultVersioning;
+				wp_enqueue_script(Util::namespaced($handle), $script, static::namespacedDeps($dependencies), $versioning, $inFooter);
 	}
 	
 	public static function loadCss(string $handle, string $css, array $dependencies = []) {

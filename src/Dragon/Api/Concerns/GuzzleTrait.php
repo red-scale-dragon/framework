@@ -1,16 +1,16 @@
 <?php
 
-namespace Dragon\Api\Traits;
+namespace Dragon\Api\Concerns;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Exception\RequestException;
 use Spatie\GuzzleRateLimiterMiddleware\RateLimiterMiddleware;
 use Illuminate\Support\Facades\Log;
+use GuzzleHttp\Exception\TransferException;
 
 trait GuzzleTrait {
-	private ?Client $guzzle = null;
-	private ?\stdClass $error = null;
+	protected ?Client $guzzle = null;
+	protected ?\stdClass $error = null;
 	
 	public function getError() : ?\stdClass {
 		return $this->error;
@@ -26,7 +26,7 @@ trait GuzzleTrait {
 			$response = $request();
 			return json_decode((string)$response->getBody());
 			
-		} catch (RequestException $e) {
+		} catch (TransferException $e) {
 			return $this->handleGuzzleException($e);
 		}
 	}
@@ -37,6 +37,11 @@ trait GuzzleTrait {
 		if ($shouldLog) {
 			Log::error(static::class . " " . $e->getMessage());
 		}
+		
+		if (method_exists($e, 'getResponse') === false) {
+			return null;
+		}
+		
 		$response = $e->getResponse();
 		
 		if (empty($response)) {

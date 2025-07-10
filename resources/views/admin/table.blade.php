@@ -6,6 +6,13 @@
 	@if($can_delete)
 		<button class="button button-danger" id="dragon-table-delete-button">Delete Selected</button>
 	@endif
+	@if($can_view_deleted)
+		@if($is_viewing_trashed)
+		<a href="{!! \Dragon\Support\Url::getCurrentUrl(['show_deleted' => 0]) !!}" class="button button-default">View Active</a>
+		@else
+		<a href="{!! \Dragon\Support\Url::getCurrentUrl(['show_deleted' => 1]) !!}" class="button button-default">View Deleted</a>
+		@endif
+	@endif
 	<table id="data-table-wrapper">
 		<thead>
 			<tr>
@@ -27,15 +34,28 @@
 			@foreach($rows as $row)
 			<tr data-row-id="{{ $row->{$row->getKeyName()} }}">
 				@foreach($columnHeaders as $dbCol => $header)
-					<td>{{ $row->{$dbCol} }}</td>
+					@if(in_array($dbCol, $display_raw_columns))
+					<td>{!! $display_callback($row, $dbCol) !!}</td>
+					@else
+					<td>{{ $display_callback($row, $dbCol) }}</td>
+					@endif
 				@endforeach
 				
 				@foreach($rowActions as $actionName => $actionData)
-					<td><button
-						onclick="window.location='{{ \Dragon\Support\Url::getAdminMenuLink($actionData['page_slug'], [$actionData['query_key'] => $row->{$row->getKeyName()}]) }}'">
-							<i class="dashicons {{ $actionData['icon_class'] }}"></i>
-						</button>
-					</td>
+					@if ($row_has_action($row, $actionName))
+						@if (!empty($actionData['url_callback']))
+							@php $link = $actionData['url_callback']($row); @endphp
+						@else
+							@php $link = \Dragon\Support\Url::getAdminMenuLink($actionData['page_slug'], [$actionData['query_key'] => $row->{$row->getKeyName()}]); @endphp
+						@endif
+						<td><button
+							onclick="window.location='{{ $link }}'">
+								<i class="dashicons {{ $actionData['icon_class'] }}"></i>
+							</button>
+						</td>
+					@else
+					<td>--</td>
+					@endif
 				@endforeach
 			</tr>
 			@endforeach

@@ -36,6 +36,11 @@ class AdminPluginHooks extends PluginHooksAbstract {
 		foreach (config('cron.actions') as $hook => $data) {
 			wp_clear_scheduled_hook($hook);
 		}
+		
+		$hooks = Config::get('hooks.deactivation', []);
+		foreach ($hooks as $callback) {
+			$callback();
+		}
 	}
 	
 	public static function buildAdminMenu(): void {

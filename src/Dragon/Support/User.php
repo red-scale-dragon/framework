@@ -24,6 +24,29 @@ class User {
 		return static::get()->ID;
 	}
 	
+	public static function getUserIpAddresses() : array {
+		$sources = [
+			'HTTP_CF_CONNECTING_IP',
+			'REMOTE_ADDR',
+			'HTTP_X_FORWARDED_FOR',
+			'HTTP_X_FORWARDED',
+			'HTTP_CLIENT_IP',
+			'HTTP_X_REAL_IP',
+			'HTTP_X_CLUSTER_CLIENT_IP',
+		];
+		
+		$out = [];
+		foreach ($sources as $source) {
+			if (empty($_SERVER[$source])) {
+				continue;
+			}
+			
+			$out[$source] = $_SERVER[$source];
+		}
+		
+		return $out;
+	}
+	
 	public static function getUserEmail(?int $userId = null) : string {
 		return static::get($userId)->user_email;
 	}
@@ -80,7 +103,7 @@ class User {
 	}
 	
 	public static function setMeta(string $key, $value, ?int $userId = null) {
-		$userId ?? static::getUserId();
+		$userId ??= static::getUserId();
 		update_user_meta($userId, $key, $value);
 	}
 	

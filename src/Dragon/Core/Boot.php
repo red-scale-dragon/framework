@@ -9,8 +9,10 @@ use Dragon\Database\Option;
 use Dragon\Database\Migrate;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use App\Exceptions\Handler;
-use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
+use Illuminate\Contracts\Console\Kernel as ConsoleKernel;
 use App\Http\Kernel as AppKernel;
+use App\Console\Kernel as AppConsoleKernel;
 
 class Boot {
 	public static function init() {
@@ -24,7 +26,8 @@ class Boot {
 	public static function bootAcorn() {
 		\Roots\bootloader()->boot();
 		app()->singleton(ExceptionHandler::class, Handler::class);
-		app()->singleton(Kernel::class, AppKernel::class);
+		app()->singleton(HttpKernel::class, AppKernel::class);
+		app()->singleton(ConsoleKernel::class, AppConsoleKernel::class);
 	}
 	
 	public static function initWp() {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Dragon\Http\Form;
+namespace Dragon\Support;
 
-class Select extends Field {
+class CommonLists {
 	const STATES = [
 		"AL" => "Alabama",
 		"AK" => "Alaska",
@@ -57,30 +57,11 @@ class Select extends Field {
 		"WY" => "Wyoming",
 	];
 	
-	private array $options = [];
-	
-	public function options(array $options) : static {
-		$this->options = $options;
-		return $this;
+	public static function getStates(bool $flipped = false) {
+		return $flipped ? array_flip(static::STATES) : static::STATES;
 	}
 	
-	protected function toHtml() : string {
-		$out = '<select name="' . $this->getName() . '" ';
-		foreach ($this->getAttributes() as $key => $val) {
-			$out .= $key . '="' . $val . '"';
-		}
-		$out .= '>';
-		
-		foreach ($this->options as $value => $text) {
-			$out .= '<option value="' . $value . '"';
-			if (old($this->getName(), $this->getValue()) === (string)$value) {
-				$out .= ' selected';
-			}
-			$out .= '>' . $text . '</option>';
-		}
-		
-		$out .= '</select>';
-		
-		return $out;
+	public static function getStateTwoLetters(string $name) {
+		return static::getStates(true)[$name] ?? null;
 	}
 }

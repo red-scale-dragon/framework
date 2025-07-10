@@ -46,12 +46,18 @@ class Url {
 	}
 	
 	public static function getCurrentUrl(array $appendedQuery = []) : string {
-		$url = url()->current();
+		$url = static::getDomain() . $_SERVER['REQUEST_URI'];
 		if (!empty($appendedQuery)) {
 			return static::changeQuery($url, $appendedQuery);
 		}
 		
 		return $url;
+	}
+	
+	public static function getDomain() {
+		$protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on" ? "http" : "https";
+		
+		return $protocol . "://" .$_SERVER['HTTP_HOST'];
 	}
 	
 	private static function changeQuery(string $url, array $appendedQuery) : string {

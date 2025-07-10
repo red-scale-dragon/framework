@@ -10,6 +10,8 @@ abstract class Field {
 	protected ?string $label = "";
 	protected ?string $description = "";
 	protected ?string $value = "";
+	protected array $valueArray = [];
+	protected ?string $readOnlyValue = "";
 	protected bool $required = false;
 	protected bool $encrypted = false;
 	protected bool $readOnly = false;
@@ -35,6 +37,16 @@ abstract class Field {
 	
 	public function value(?string $value) : static {
 		$this->value = stripslashes($value);
+		return $this;
+	}
+	
+	public function valueArray(array $value) : static {
+		$this->valueArray = $value;
+		return $this;
+	}
+	
+	public function valueReadOnly(?string $value) : static {
+		$this->readOnlyValue = $value;
 		return $this;
 	}
 	
@@ -74,6 +86,26 @@ abstract class Field {
 		return str_replace('"', '&quot;', $out);
 	}
 	
+	public function getValueArray() : array {
+		return $this->valueArray;
+	}
+	
+	public function getValueReadOnly() : ?string {
+		if (!is_null($this->readOnlyValue)) {
+			return $this->readOnlyValue;
+		}
+		
+		if (!is_null($this->getValue())) {
+			return $this->getValue();
+		}
+		
+		if (!empty($this->getValueArray())) {
+			return implode(", ", $this->getValueArray());
+		}
+		
+		return null;
+	}
+	
 	public function getLabel() : ?string {
 		return $this->label;
 	}
@@ -96,7 +128,7 @@ abstract class Field {
 	
 	public function render() : string {
 		if ($this->isReadOnly()) {
-			return (string)$this->getValue();
+			return (string)$this->getValueReadOnly();
 		}
 		
 		return $this->toHtml();

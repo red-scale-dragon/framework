@@ -32,9 +32,6 @@ const adminTable = ($ => {
 					'action': $('#data-table-wrapper tbody').attr('data-delete-action'),
 					'id': rowId,
 					'route': $('#data-table-wrapper tbody').attr('data-route')
-				}, res => {
-					response = JSON.parse(res);
-					console.log(response);
 				});
 				
 				table.row('.selected').remove().draw(false);
