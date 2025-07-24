@@ -4,7 +4,11 @@
 		<a href="{!! \Dragon\Support\Url::getAdminMenuLink($details_slug) !!}" class="button button-primary">Create</a>
 	@endif
 	@if($can_delete)
-		<button class="button button-danger" id="dragon-table-delete-button">Delete Selected</button>
+		@if($is_viewing_trashed && $can_restore)
+		<button class="button button-danger" id="dragon-table-delete-button" data-action="restore">Restore Selected</button>
+		@elseif (!$is_viewing_trashed)
+		<button class="button button-danger" id="dragon-table-delete-button" data-action="delete">Delete Selected</button>
+		@endif
 	@endif
 	@if($can_view_deleted)
 		@if($is_viewing_trashed)
@@ -32,7 +36,7 @@
 		@endif
 		data-ajax="{!! admin_url('admin-ajax.php') !!}">
 			@foreach($rows as $row)
-			<tr data-row-id="{{ $row->{$row->getKeyName()} }}">
+			<tr data-row-id="{{ method_exists($row, 'getKeyName') ? $row->{$row->getKeyName()} : $row->id }}">
 				@foreach($columnHeaders as $dbCol => $header)
 					@if(in_array($dbCol, $display_raw_columns))
 					<td>{!! $display_callback($row, $dbCol) !!}</td>
@@ -46,10 +50,13 @@
 						@if (!empty($actionData['url_callback']))
 							@php $link = $actionData['url_callback']($row); @endphp
 						@else
-							@php $link = \Dragon\Support\Url::getAdminMenuLink($actionData['page_slug'], [$actionData['query_key'] => $row->{$row->getKeyName()}]); @endphp
+							@php $link = \Dragon\Support\Url::getAdminMenuLink(
+								$actionData['page_slug'],
+								[$actionData['query_key'] => (method_exists($row, 'getKeyName') ? $row->{$row->getKeyName()} : $row->id)
+							]);
+							@endphp
 						@endif
-						<td><button
-							onclick="window.location='{{ $link }}'">
+						<td><button class="action_button" data-link="{{ $link }}">
 								<i class="dashicons {{ $actionData['icon_class'] }}"></i>
 							</button>
 						</td>
@@ -61,4 +68,7 @@
 			@endforeach
 		</tbody>
 	</table>
+	@if (!empty($go_back_link()))
+	<div><a href="{!! $go_back_link() !!}" class="button button-primary">Go Back</a></div>
+	@endif
 </div>

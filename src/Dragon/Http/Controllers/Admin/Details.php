@@ -8,12 +8,14 @@ use Dragon\Core\Config;
 use Dragon\Support\User;
 use Dragon\Support\Util;
 use Dragon\Support\Url;
+use Illuminate\Database\Eloquent\Model;
 
 class Details extends SettingsController {
 	protected static string $successNotice = "Saved.";
 	protected string $modelName = "";
 	protected ?string $requiredQueryParam = null;
 	protected ?string $requiredQueryValue = null;
+	protected ?Model $currentRow = null;
 	
 	protected array $emptyIsNullOnFields = [
 		//
@@ -51,9 +53,10 @@ class Details extends SettingsController {
 		$filtered = $this->modifySaveData($filtered);
 		
 		if (empty($id)) {
-			$this->modelName::create($filtered);
+			$this->currentRow = $this->modelName::create($filtered);
 		} else {
 			$this->modelName::where('id', $id)->update($filtered);
+			$this->currentRow = $this->modelName::find($id);
 		}
 	}
 	

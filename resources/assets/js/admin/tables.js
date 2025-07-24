@@ -9,10 +9,12 @@ const adminTable = ($ => {
 	          topStart: {
 	              buttons: ['csv', 'colvis']
 	          }
-	      }
+	      },
+		  stateSave: true
 		});
 
 		ajax_url = $('#data-table-wrapper tbody').attr('data-ajax');
+		addActionClickHandler();
 		addSelectedRowHandler();
 		addDeleteRowHandler();
 		addRowEditHandler();
@@ -24,6 +26,17 @@ const adminTable = ($ => {
 		});
 	}
 	
+	function addActionClickHandler() {
+		$('#data-table-wrapper').on('dblclick', '.action_button', function (e) {
+			e.stopPropagation();
+		});
+		
+		$('#data-table-wrapper').on('click', '.action_button', function (e) {
+			e.stopPropagation();
+			window.location = $(this).attr('data-link');
+		});
+	}
+	
 	function addDeleteRowHandler() {
 		$('#dragon-table-delete-button').on('click', function () {
 			$('#data-table-wrapper .selected').each(function () {
@@ -31,7 +44,8 @@ const adminTable = ($ => {
 				$.post(ajax_url, {
 					'action': $('#data-table-wrapper tbody').attr('data-delete-action'),
 					'id': rowId,
-					'route': $('#data-table-wrapper tbody').attr('data-route')
+					'route': $('#data-table-wrapper tbody').attr('data-route'),
+					'delete_action': $('#dragon-table-delete-button').attr('data-action')
 				});
 				
 				table.row('.selected').remove().draw(false);
@@ -43,8 +57,8 @@ const adminTable = ($ => {
 		$('#data-table-wrapper').on('dblclick', 'tbody tr', function (e) {
 			let rowId = $(this).attr('data-row-id');
 			let updatePage = $('#data-table-wrapper tbody').attr('data-details-page');
-			
-			if (updatePage.length > 0 && rowId > 0) {
+
+			if (updatePage.length > 0 && (rowId > 0 || typeof rowId === 'string')) {
 				window.location = updatePage + "&id=" + rowId;
 			}
 		});

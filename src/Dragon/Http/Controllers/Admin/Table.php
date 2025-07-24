@@ -16,6 +16,7 @@ abstract class Table extends AdminPageController {
 	protected bool $canRead = false;
 	protected bool $canUpdate = false;
 	protected bool $canDelete = false;
+	protected bool $canRestore = false;
 	
 	protected string $detailsSlug = "";
 	protected string $view = "admin.table";
@@ -69,6 +70,7 @@ abstract class Table extends AdminPageController {
 			'details_slug'	=> $this->detailsSlug,
 			'can_create'	=> $this->canCreate,
 			'can_delete'	=> $this->canDelete,
+			'can_restore'	=> $this->canRestore,
 			'can_see_details'	=> ($this->canUpdate || $this->canRead),
 			'can_view_deleted'	=> $this->canViewDeleted(),
 			'is_viewing_trashed'	=> $this->isViewingTrashed,
@@ -77,6 +79,7 @@ abstract class Table extends AdminPageController {
 			'details_page'		=> Url::getAdminMenuLink($this->detailsSlug),
 			'display_callback'	=> function($row, $column){return $this->getColumn($row, $column);},
 			'row_has_action'	=> function($row, $actionName){return $this->rowHasAction($row, $actionName);},
+			'go_back_link'		=> function(){return $this->getGoBackLink();},
 			]));
 	}
 	
@@ -85,8 +88,12 @@ abstract class Table extends AdminPageController {
 			http_response_code(400);
 		}
 		
-		$this->deleteRow($request->get('id'));
+		$this->deleteRow($request);
 		http_response_code(200);
+	}
+	
+	protected function getGoBackLink() : ?string {
+		return null;
 	}
 	
 	protected function getColumn($row, $column) : ?string {
@@ -116,7 +123,7 @@ abstract class Table extends AdminPageController {
 		return true;
 	}
 	
-	protected function deleteRow(int $id) {
+	protected function deleteRow(Request $request) {
 		//
 	}
 	

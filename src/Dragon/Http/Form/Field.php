@@ -11,7 +11,7 @@ abstract class Field {
 	protected ?string $description = "";
 	protected ?string $value = "";
 	protected array $valueArray = [];
-	protected ?string $readOnlyValue = "";
+	protected ?string $readOnlyValue = null;
 	protected bool $required = false;
 	protected bool $encrypted = false;
 	protected bool $readOnly = false;

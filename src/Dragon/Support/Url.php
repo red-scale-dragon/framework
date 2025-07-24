@@ -2,6 +2,8 @@
 
 namespace Dragon\Support;
 
+use Dragon\Core\Config;
+
 class Url {
 	public static function isRestRequest() : bool {
 		return defined('REST_REQUEST') && REST_REQUEST;
@@ -58,6 +60,10 @@ class Url {
 		$protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on" ? "http" : "https";
 		
 		return $protocol . "://" .$_SERVER['HTTP_HOST'];
+	}
+	
+	public static function pluginUrl(string $relativePath = '') {
+		return plugin_dir_url(Config::getPluginDirName() . '/' . Config::getPluginDirName()) . $relativePath;
 	}
 	
 	private static function changeQuery(string $url, array $appendedQuery) : string {

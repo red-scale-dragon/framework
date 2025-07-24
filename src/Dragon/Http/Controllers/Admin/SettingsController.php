@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Dragon\Database\Option;
 use Dragon\Http\Form\Select;
 use Illuminate\Foundation\Http\FormRequest;
-use Dragon\Support\Url;
 
 class SettingsController extends AdminPageController {
 	protected static string $successNotice = "Settings saved.";
@@ -48,10 +47,15 @@ class SettingsController extends AdminPageController {
 		}
 		
 		$this->saveItems($saveThese);
+		$this->afterSaving($request);
 		
 		Notice::success(static::$successNotice);
 		
 		return $this->show($request);
+	}
+	
+	protected function afterSaving(Request $request) {
+		//
 	}
 	
 	protected function saveItems(array $data) {
@@ -63,6 +67,7 @@ class SettingsController extends AdminPageController {
 	protected function getFields(Request $request) {
 		return [
 			"Plugin Settings",
+			
 			Select::make('remove_migrations_on_deactivation')
 			->options([
 				'no' => 'No (Recommended)',

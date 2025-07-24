@@ -59,13 +59,13 @@ abstract class RestfulOauth2 {
 				'base_uri' => $this->getUrl(),
 			]);
 			
-			return $tokenClient->post($this->tokenPath, [
+			return $tokenClient->post($this->tokenPath, $this->filterTokenRequestParams([
 				'form_params' => [
 					'grant_type'	=> 'client_credentials',
 					'client_id'		=> $this->clientId,
 					'client_secret'	=> $this->clientSecret,
 				],
-			]);
+			]));
 		});
 			
 			if (empty($response)) {
@@ -79,6 +79,10 @@ abstract class RestfulOauth2 {
 			}
 			
 			return $token;
+	}
+	
+	protected function filterTokenRequestParams(array $guzzleParams) {
+		return $guzzleParams;
 	}
 	
 	protected function getAccessTokenFromResponse(\stdClass $response) {

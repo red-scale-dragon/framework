@@ -14,9 +14,15 @@ abstract class ShortcodeController extends Controller {
 	protected static bool $shouldNamespace = true;
 	protected static string $shortcodeTag = "";
 	protected static string $routeName = "";
+	protected static bool $allowAdminAreaRequests = false;
+	protected static bool $allowJsonRequests = false;
 	
 	public static function register() {
-		if (is_admin() || wp_is_json_request()) {
+		if (!static::$allowAdminAreaRequests && is_admin()) {
+			return;
+		}
+		
+		if (!static::$allowJsonRequests && wp_is_json_request()) {
 			return;
 		}
 		
@@ -30,13 +36,13 @@ abstract class ShortcodeController extends Controller {
 			
 			$url = route(static::$routeName, $request->all(), false);
 			$req = Request::create(
-				$url,
-				$request->getMethod(),
-				$request->all(),
-				$request->cookies->all(),
-				$request->files->all(),
-				$request->server->all()
-			);
+					$url,
+					$request->getMethod(),
+					$request->all(),
+					$request->cookies->all(),
+					$request->files->all(),
+					$request->server->all()
+					);
 			$req->attributes->add([
 				'attributes' => $attributes,
 				'content' => $content,
