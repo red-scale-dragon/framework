@@ -17,6 +17,16 @@ class Util {
 		return false;
 	}
 	
+	public static function firstNonEmpty(array $items) : mixed {
+		foreach ($items as $item) {
+			if (!empty($item)) {
+				return $item;
+			}
+		}
+		
+		return null;
+	}
+	
 	public static function namespaced(string $key) : string {
 		$prefix = Config::prefix();
 		return $prefix . '_' . $key;

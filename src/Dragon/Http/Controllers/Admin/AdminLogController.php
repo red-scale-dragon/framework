@@ -25,7 +25,7 @@ class AdminLogController extends AdminPageController {
 			->value($logContents)
 			->attributes([
 				'rows' => 30,
-				'cols' => 150,
+				'cols' => 125,
 			]),
 		];
 		

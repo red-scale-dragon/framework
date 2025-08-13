@@ -23,6 +23,7 @@ abstract class Table extends AdminPageController {
 	protected ?string $requiredQueryParam = null;
 	protected bool $hasSoftDeletes = false;
 	protected bool $isViewingTrashed = false;
+	protected string $dateSearchOnHeader = '';
 	protected array $displayRawColumns = [];
 	
 	protected array $headers = [
@@ -38,8 +39,20 @@ abstract class Table extends AdminPageController {
 	];
 	
 	protected static array $scripts = [
+		'pdf-make' => [
+			'script' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
+		],
+		'pdf-make-fonts' => [
+			'script' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
+		],
+		'luxon' => [
+			'script' => '//cdnjs.cloudflare.com/ajax/libs/luxon/3.7.1/luxon.min.js',
+		],
 		'dataTables' => [
-			'script' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/datatables.min.js',
+			'script' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.4/b-colvis-3.2.4/b-html5-3.2.4/cr-2.1.1/date-1.5.6/sp-2.3.4/sl-3.0.1/datatables.min.js',
+			'dependencies' => [
+				'pdf-make', 'pdf-make-fonts', 'luxon',
+			],
 		],
 		'adminTable' => [
 			'script' => 'admin/tables.js',
@@ -51,7 +64,7 @@ abstract class Table extends AdminPageController {
 	
 	protected static array $styles = [
 		'dataTables' => [
-			'style' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.3/b-colvis-3.2.3/b-html5-3.2.3/datatables.min.css',
+			'style' => '//cdn.datatables.net/v/dt/dt-2.3.2/b-3.2.4/b-colvis-3.2.4/b-html5-3.2.4/cr-2.1.1/date-1.5.6/sp-2.3.4/sl-3.0.1/datatables.min.css',
 		],
 	];
 	
@@ -74,8 +87,9 @@ abstract class Table extends AdminPageController {
 			'can_see_details'	=> ($this->canUpdate || $this->canRead),
 			'can_view_deleted'	=> $this->canViewDeleted(),
 			'is_viewing_trashed'	=> $this->isViewingTrashed,
-			'route_name'		=> static::$routeName,
-			'display_raw_columns' => $this->displayRawColumns,
+			'route_name'			=> static::$routeName,
+			'display_raw_columns' 	=> $this->displayRawColumns,
+			'date_search_on_column'	=> $this->getColumnIndex($this->dateSearchOnHeader),
 			'details_page'		=> Url::getAdminMenuLink($this->detailsSlug),
 			'display_callback'	=> function($row, $column){return $this->getColumn($row, $column);},
 			'row_has_action'	=> function($row, $actionName){return $this->rowHasAction($row, $actionName);},
@@ -90,6 +104,14 @@ abstract class Table extends AdminPageController {
 		
 		$this->deleteRow($request);
 		http_response_code(200);
+	}
+	
+	protected function getColumnIndex(string $headerName) : ?int {
+		if (empty($this->headers[$headerName])) {
+			return null;
+		}
+		
+		return array_flip(array_keys($this->headers))[$headerName];
 	}
 	
 	protected function getGoBackLink() : ?string {

@@ -17,14 +17,20 @@
 		<a href="{!! \Dragon\Support\Url::getCurrentUrl(['show_deleted' => 1]) !!}" class="button button-default">View Deleted</a>
 		@endif
 	@endif
+	@if(!empty($date_search_on_column))
+	<div id="dragonfw-date-search" data-column-index="{{ $date_search_on_column }}" style="display:inline-block;float:right">
+		<input type="text" id="date-min" name="date-min" placeholder="Minumum date">
+		<input type="text" id="date-max" name="date-max" placeholder="Maximum date">
+	</div>
+	@endif
 	<table id="data-table-wrapper">
 		<thead>
 			<tr>
 			@foreach($columnHeaders as $dbCol => $header)
-				<th>{{ $header }}</th>
+				<th class="dragonfw-col-data">{{ $header }}</th>
 			@endforeach
 			@foreach($rowActions as $actionName => $actionData)
-				<th>{{ $actionName }}</th>
+				<th class="dragonfw-col-action">{{ $actionName }}</th>
 			@endforeach
 			</tr>
 		</thead>
@@ -67,6 +73,16 @@
 			</tr>
 			@endforeach
 		</tbody>
+		<tfoot>
+			<tr>
+				@foreach($columnHeaders as $dbCol => $header)
+					<th>{{ $header }}</th>
+				@endforeach
+				@foreach($rowActions as $actionName => $actionData)
+					<th>{{ $actionName }}</th>
+				@endforeach
+			</tr>
+		</tfoot>
 	</table>
 	@if (!empty($go_back_link()))
 	<div><a href="{!! $go_back_link() !!}" class="button button-primary">Go Back</a></div>

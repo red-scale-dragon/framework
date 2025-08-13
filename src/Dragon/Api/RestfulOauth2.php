@@ -25,8 +25,10 @@ abstract class RestfulOauth2 {
 	protected string $clientSecret = "";
 	
 	protected string $authType = "Bearer";
+	protected array $settings = [];
 	
-	public function __construct() {
+	public function __construct(array $settings = []) {
+		$this->settings = $settings;
 		$this->clientId = Encryptor::decrypt(Option::get($this->clientIdSettingsKey));
 		$this->clientSecret = Encryptor::decrypt(Option::get($this->clientSecretSettingsKey));
 		
@@ -59,13 +61,13 @@ abstract class RestfulOauth2 {
 				'base_uri' => $this->getUrl(),
 			]);
 			
-			return $tokenClient->post($this->tokenPath, $this->filterTokenRequestParams([
+			return $tokenClient->post($this->tokenPath, [
 				'form_params' => [
 					'grant_type'	=> 'client_credentials',
 					'client_id'		=> $this->clientId,
 					'client_secret'	=> $this->clientSecret,
 				],
-			]));
+			]);
 		});
 			
 			if (empty($response)) {
@@ -79,10 +81,6 @@ abstract class RestfulOauth2 {
 			}
 			
 			return $token;
-	}
-	
-	protected function filterTokenRequestParams(array $guzzleParams) {
-		return $guzzleParams;
 	}
 	
 	protected function getAccessTokenFromResponse(\stdClass $response) {

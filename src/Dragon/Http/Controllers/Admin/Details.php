@@ -29,6 +29,7 @@ class Details extends SettingsController {
 				$this->requiredQueryParam => $this->requiredQueryValue,
 			];
 		}
+		
 		static::$lastPage = Url::getAdminMenuLink(static::$parentSlug, $query);
 	}
 	
@@ -64,13 +65,14 @@ class Details extends SettingsController {
 		return $filtered;
 	}
 	
-	protected function getValue(?int $id, string $key, ?string $default = null) : ?string {
+	protected function getValue(?int $id, string $key, ?string $default = null, bool $useDefaultOnNull = false) : ?string {
 		if (empty($id) || empty($this->modelName)) {
 			return $default;
 		}
 		
 		$row = $this->modelName::find($id);
-		return empty($row) ? $default : (string)$row->{$key};
+		$value = empty($row) ? $default : (string)$row->{$key};
+		return (is_null($value) || $value === '') && $useDefaultOnNull ? $default : $value;
 	}
 	
 	protected function getArrayValue(?int $id, string $key, array $default = []) : array {
