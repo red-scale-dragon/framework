@@ -44,11 +44,11 @@ class Url {
 		}
 		
 		$finished = empty($append) ? '' : '&' . implode('&', $append);
-		return $link . $finished;
+		return str_replace('wp-cron.php/', '', $link . $finished);
 	}
 	
 	public static function getCurrentUrl(array $appendedQuery = []) : string {
-		$url = static::getDomain() . $_SERVER['REQUEST_URI'];
+		$url = static::getDomain(true) . $_SERVER['REQUEST_URI'];
 		if (!empty($appendedQuery)) {
 			return static::changeQuery($url, $appendedQuery);
 		}
@@ -56,10 +56,15 @@ class Url {
 		return $url;
 	}
 	
-	public static function getDomain() {
+	public static function getDomain(bool $withProtocol = false) {
+		$host = $_SERVER['HTTP_HOST'] ?? 'example.com';
+		if (!$withProtocol) {
+			return $host;
+		}
+		
 		$protocol = empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] !== "on" ? "http" : "https";
 		
-		return $protocol . "://" .$_SERVER['HTTP_HOST'];
+		return $protocol . "://" . $host;
 	}
 	
 	public static function pluginUrl(string $relativePath = '') {

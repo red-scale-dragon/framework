@@ -29,15 +29,18 @@
 			@foreach($columnHeaders as $dbCol => $header)
 				<th class="dragonfw-col-data">{{ $header }}</th>
 			@endforeach
-			@foreach($rowActions as $actionName => $actionData)
-				<th class="dragonfw-col-action">{{ $actionName }}</th>
-			@endforeach
+			
+			@if(!$is_viewing_trashed)
+				@foreach($rowActions as $actionName => $actionData)
+					<th class="dragonfw-col-action">{{ $actionName }}</th>
+				@endforeach
+			@endif
 			</tr>
 		</thead>
 		<tbody
 		data-route="{{ $route_name }}"
 		data-delete-action="@namespaced(table_delete)"
-		@if ($can_see_details)
+		@if (!$is_viewing_trashed && $can_see_details)
 			data-details-page="{!! $details_page !!}"
 		@endif
 		data-ajax="{!! admin_url('admin-ajax.php') !!}">
@@ -51,25 +54,27 @@
 					@endif
 				@endforeach
 				
-				@foreach($rowActions as $actionName => $actionData)
-					@if ($row_has_action($row, $actionName))
-						@if (!empty($actionData['url_callback']))
-							@php $link = $actionData['url_callback']($row); @endphp
+				@if(!$is_viewing_trashed)
+					@foreach($rowActions as $actionName => $actionData)
+						@if ($row_has_action($row, $actionName))
+							@if (!empty($actionData['url_callback']))
+								@php $link = $actionData['url_callback']($row); @endphp
+							@else
+								@php $link = \Dragon\Support\Url::getAdminMenuLink(
+									$actionData['page_slug'],
+									[$actionData['query_key'] => (method_exists($row, 'getKeyName') ? $row->{$row->getKeyName()} : $row->id)
+								]);
+								@endphp
+							@endif
+							<td><button class="action_button" data-link="{{ $link }}">
+									<i class="dashicons {{ $actionData['icon_class'] }}"></i>
+								</button>
+							</td>
 						@else
-							@php $link = \Dragon\Support\Url::getAdminMenuLink(
-								$actionData['page_slug'],
-								[$actionData['query_key'] => (method_exists($row, 'getKeyName') ? $row->{$row->getKeyName()} : $row->id)
-							]);
-							@endphp
+						<td>--</td>
 						@endif
-						<td><button class="action_button" data-link="{{ $link }}">
-								<i class="dashicons {{ $actionData['icon_class'] }}"></i>
-							</button>
-						</td>
-					@else
-					<td>--</td>
-					@endif
-				@endforeach
+					@endforeach
+				@endif
 			</tr>
 			@endforeach
 		</tbody>
@@ -78,9 +83,12 @@
 				@foreach($columnHeaders as $dbCol => $header)
 					<th>{{ $header }}</th>
 				@endforeach
-				@foreach($rowActions as $actionName => $actionData)
-					<th>{{ $actionName }}</th>
-				@endforeach
+				
+				@if(!$is_viewing_trashed)
+					@foreach($rowActions as $actionName => $actionData)
+						<th>{{ $actionName }}</th>
+					@endforeach
+				@endif
 			</tr>
 		</tfoot>
 	</table>

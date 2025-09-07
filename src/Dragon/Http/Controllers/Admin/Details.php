@@ -47,7 +47,7 @@ class Details extends SettingsController {
 			} else if (is_array($val)) {
 				$filtered[Util::unnamespaced($key)] = $val;
 			} else {
-				$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes($val));
+				$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes((string)$val));
 			}
 		}
 		

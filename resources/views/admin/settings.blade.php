@@ -1,6 +1,6 @@
 <h1>{{ $title }}</h1>
 <div id="dragon-settings" class="card card-full-width">
-	<form method="POST">
+	<form method="POST" enctype="multipart/form-data">
 		@nonce
 		<table class="form-table">
 			<tr>

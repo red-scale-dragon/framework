@@ -144,3 +144,7 @@
 input[type="range"] {
 	width: 95%;
 }
+
+.tox .tox-promotion {
+	display: none;
+}
