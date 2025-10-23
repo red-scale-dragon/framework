@@ -44,7 +44,10 @@ class Url {
 		}
 		
 		$finished = empty($append) ? '' : '&' . implode('&', $append);
-		return str_replace('wp-cron.php/', '', $link . $finished);
+		return str_replace([
+			'wp-cron.php/',
+			'/wp-admin/admin-ajax.php',
+		], '', $link . $finished);
 	}
 	
 	public static function getCurrentUrl(array $appendedQuery = []) : string {

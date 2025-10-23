@@ -47,7 +47,7 @@ class Details extends SettingsController {
 			} else if (is_array($val)) {
 				$filtered[Util::unnamespaced($key)] = $val;
 			} else {
-				$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes((string)$val));
+				$filtered[Util::unnamespaced($key)] = str_replace('&quot;', '"', stripslashes($val));
 			}
 		}
 		
@@ -56,8 +56,13 @@ class Details extends SettingsController {
 		if (empty($id)) {
 			$this->currentRow = $this->modelName::create($filtered);
 		} else {
-			$this->modelName::where('id', $id)->update($filtered);
-			$this->currentRow = $this->modelName::find($id);
+			$model = $this->modelName::find($id);
+			foreach ($filtered as $key => $val) {
+				$model->{$key} = $val;
+			}
+			$model->save();
+			
+			$this->currentRow = $model;
 		}
 	}
 	
@@ -67,12 +72,13 @@ class Details extends SettingsController {
 	
 	protected function getValue(?int $id, string $key, ?string $default = null, bool $useDefaultOnNull = false) : ?string {
 		if (empty($id) || empty($this->modelName)) {
-			return $default;
+			return old($key, $default);
 		}
 		
 		$row = $this->modelName::find($id);
 		$value = empty($row) ? $default : (string)$row->{$key};
-		return (is_null($value) || $value === '') && $useDefaultOnNull ? $default : $value;
+		$newValue = (is_null($value) || $value === '') && $useDefaultOnNull ? $default : $value;
+		return old($key, $newValue);
 	}
 	
 	protected function getArrayValue(?int $id, string $key, array $default = []) : array {

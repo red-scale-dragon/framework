@@ -50,7 +50,9 @@ trait GuzzleTrait {
 			$this->error = $error;
 		} else {
 			$jsonError = (string)$e->getResponse()->getBody();
-			$this->error = json_decode($jsonError);
+			$error = new \stdClass();
+			$error->guzzle_error = json_decode($jsonError);
+			$this->error = $error;
 			
 			if ($shouldLog) {
 				Log::error(static::class . " " . $jsonError);

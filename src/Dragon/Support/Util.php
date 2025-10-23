@@ -51,7 +51,7 @@ class Util {
 			}
 		}
 		
-		return $out;
+		return $out === '.' ? '' : $out;
 	}
 	
 	public static function isEmail(string $email) : bool {
